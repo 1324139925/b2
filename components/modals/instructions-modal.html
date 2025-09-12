@@ -1,0 +1,61 @@
+<!-- 修改器使用指南弹窗 -->
+<div id="instructionsModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-primary">修改器使用指南</h3>
+      <button id="closeInstructionsModal" class="text-neutral-400 hover:text-neutral-600 transition-colors">
+        <i class="fa fa-times text-lg"></i>
+      </button>
+    </div>
+    
+    <div class="mb-6 max-h-[300px] overflow-y-auto pr-2">
+      <!-- 重点步骤（简洁版） -->
+      <div class="mb-5">
+        <h4 class="font-medium text-neutral-800 mb-2">关键使用步骤</h4>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+            <p class="text-sm font-medium text-primary mb-1">第一步</p>
+            <p class="text-sm text-neutral-700">先运行修改器，再启动游戏</p>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+            <p class="text-sm font-medium text-primary mb-1">第二步</p>
+            <p class="text-sm text-neutral-700">等待修改器识别游戏进程</p>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+            <p class="text-sm font-medium text-primary mb-1">第三步</p>
+            <p class="text-sm text-neutral-700">通过界面或热键启用功能</p>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+            <p class="text-sm font-medium text-primary mb-1">重要提示</p>
+            <p class="text-sm text-neutral-700">建议关闭杀毒软件避免误报</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 安全警告（突出显示） -->
+      <div class="bg-red-50 p-3 rounded-lg border border-red-100 mb-5">
+        <p class="text-red-800 text-sm font-medium">⚠️ 安全提示</p>
+        <p class="text-red-700 text-sm">使用前请备份游戏存档，避免意外导致存档损坏</p>
+      </div>
+      
+      <!-- 核心建议 -->
+      <div>
+        <h4 class="font-medium text-neutral-800 mb-2">使用建议</h4>
+        <ul class="space-y-1">
+          <li class="text-sm text-neutral-700 flex items-start">
+            <i class="fa fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+            <span>不要过度使用修改功能，保持游戏乐趣</span>
+          </li>
+          <li class="text-sm text-neutral-700 flex items-start">
+            <i class="fa fa-check-circle text-green-500 mt-0.5 mr-2"></i>
+            <span>游戏更新后可能需要更新修改器</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <button id="confirmInstructions" class="w-full p-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+      我明白了
+    </button>
+  </div>
+</div>

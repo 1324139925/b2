@@ -1,0 +1,52 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_ENV = "production"
+
+# 静态资源缓存策略优化
+[[headers]]
+  for = "/*.{js,css,svg}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.{png,jpg,jpeg,gif,webp}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.{html,htm}"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Netlify Asset Optimization配置
+[build.processing]
+  skip_processing = false
+
+  # 压缩CSS
+  [build.processing.css]
+    bundle = false
+    minify = true
+    optimize = true
+
+  # 压缩JavaScript
+  [build.processing.js]
+    bundle = false
+    minify = true
+    optimize = true
+
+  # 压缩HTML
+  [build.processing.html]
+    pretty_urls = true
+    minify = true
+
+  # 图片优化
+  [build.processing.images]
+    compress = true

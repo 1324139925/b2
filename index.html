@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yoke&Lumen修改器整合工坊</title>
+  <!-- 网站图标 -->
+  <link rel="icon" type="image/svg+xml" href="gradient-ball-icon.svg">
+  
+  <!-- 预加载关键资源 -->
+  <link rel="preload" href="assets/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="assets/css/game-elements-bg.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="gradient-ball-icon.svg" as="image">
+  <link rel="preload" href="assets/images/logo/45b8b3550e0e17e34d5bedea788e5eb3_副本.png" as="image">
+  <link rel="preload" href="assets/images/logo/店标.png" as="image">
+  
+  <!-- 关键CSS内联 -->
+  <style>
+    /* 全局样式重置和基础设置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding: 0 !important;
+    }
+
+    /* 布局相关样式 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* 可见性类 */
+    .hidden {
+      display: none !important;
+    }
+
+    .visible {
+      visibility: visible;
+    }
+
+    .invisible {
+      visibility: hidden;
+    }
+
+    /* 加载指示器样式 */
+    .loading-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 400px;
+    }
+
+    .loading-spinner {
+      border: 4px solid rgba(59, 130, 246, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid #3b82f6;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 空状态样式 */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #64748b;
+    }
+
+    .empty-state h3 {
+      margin-bottom: 1rem;
+      color: #334155;
+    }
+
+    /* 页头样式 */
+    header {
+      position: relative;
+      z-index: 10;
+      margin-bottom: 0 !important;
+    }
+
+    /* 滚动文字动画 */
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+      animation-delay: 0s;
+      width: 200%;
+      will-change: transform;
+    }
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-33.333%);
+      }
+    }
+
+    /* 搜索框特定样式 */
+    #searchInput {
+      padding-left: 2.8rem !important;
+    }
+
+    /* 按钮基础样式 */
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    /* 主内容区域和页脚样式 */
+    main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 导航栏样式 */
+    #header-container {
+      margin-bottom: 0 !important;
+      margin-top: -5px;
+    }
+    #header-container header {
+      border-radius: 1rem !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 0 !important;
+      overflow: hidden;
+    }
+  </style>
+  
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- 引入Font Awesome (fallback for preload) -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+  
+  <!-- 配置Tailwind自定义颜色和字体 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6', // 蓝色 - 传达安全、信任和专业感
+            secondary: '#10B981', // 绿色 - 表示成功和可靠
+            neutral: {
+              100: '#F3F4F6',
+              200: '#E5E7EB',
+              300: '#D1D5DB',
+              400: '#9CA3AF',
+              500: '#6B7280',
+              600: '#4B5563',
+              700: '#374151',
+              800: '#1F2937',
+              900: '#111827'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+      }
+    }
+  </style>
+</head>
+<body class="bg-neutral-100 text-neutral-800 min-h-screen p-4">
+
+  <!-- 游戏元素背景容器 -->
+  <div class="game-elements-bg"></div>
+
+  <!-- 顶部滚动文字 -->
+  <div class="sticky top-0 z-50">
+    <div class="bg-gradient-to-r from-blue-600 via-teal-500 to-emerald-600 py-2 overflow-hidden shadow-md">
+      <div class="marquee-container">
+        <div class="marquee-content font-medium text-white text-lg">
+          客服一般在线时间为10:00-24:00，如果不在线导致没有回复可留言，必回！必回！感谢您的理解~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          客服一般在线时间为10:00-24:00，如果不在线导致没有回复可留言，必回！必回！感谢您的理解~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          客服一般在线时间为10:00-24:00，如果不在线导致没有回复可留言，必回！必回！感谢您的理解~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          客服一般在线时间为10:00-24:00，如果不在线导致没有回复可留言，必回！必回！感谢您的理解~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 独立导航栏 -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-md border-b border-primary/10 rounded-lg">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between py-3">
+        <!-- 左侧标题 -->
+        <div class="inline-flex items-center text-primary hover:text-primary/80 transition-colors cursor-pointer" onclick="location.reload()">
+          <i class="fa fa-refresh text-2xl mr-2 hover:rotate-180 transition-transform duration-500"></i>
+          <span class="text-xl font-bold tracking-wide" style="font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;">Yoke&Lumen</span>
+        </div>
+        <!-- 右侧内容 -->
+        <div class="flex items-center gap-4">
+          <!-- QQ群链接 -->
+          <a href="https://qm.qq.com/q/2u1q4mOAQg" target="_blank" class="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm text-sm">
+            <i class="fa fa-qq mr-1"></i>
+            <span>加入QQ群</span>
+          </a>
+          <!-- 使用旧版界面按钮 -->
+          <a href="https://kcnod5wet3me.feishu.cn/wiki/VTK8wd4aIigCVhkzPzHc6msnnvh" target="_blank" class="flex items-center px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 transition-colors shadow-sm text-sm">
+            <i class="fa fa-history mr-1"></i>
+            <span>使用旧版界面</span>
+          </a>
+          <!-- 赞助按钮 -->
+          <button id="sponsorBtn" class="flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-sm text-sm">
+            <i class="fa fa-heart mr-1"></i>
+            <span>支持我们</span>
+          </button>
+          <!-- 合作品牌Logo -->
+          <div class="flex items-center gap-2">
+            <!-- 风灵月影Logo -->
+            <div class="p-1">
+              <img src="assets/images/logo/45b8b3550e0e17e34d5bedea788e5eb3_副本.png" alt="风灵月影LOGO" class="w-12 h-auto">
+            </div>
+            <!-- 合作标识 -->
+            <span class="text-gray-400 text-lg">+</span>
+            <!-- 店标Logo -->
+            <div class="p-1">
+              <img src="assets/images/logo/店标.png" alt="店标LOGO" class="w-12 h-auto">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主内容区域 -->
+  <main class="mb-12 text-center relative z-10 pt-8">
+    
+    <!-- 主标题 -->
+        <div class="my-6">
+          <img src="assets/images/logo/首页中间标题6.png" alt="Yoke&Lumen修改器整合工坊" class="w-full max-w-4xl mx-auto h-auto" style="max-height: 200px; object-fit: contain;">
+        </div>
+    <p class="text-xl text-neutral-600 mb-6 max-w-2xl mx-auto">简单、安全、强大的游戏修改器平台，为您提供5000+款单机游戏修改工具</p>
+    
+    <!-- 安全认证信息 -->
+    <div class="inline-flex items-center justify-center mb-8 bg-white px-6 py-3 rounded-full shadow-md">
+      <div class="flex items-center">
+        <i class="fa fa-shield text-secondary text-xl mr-2"></i>
+        <span class="font-medium text-neutral-700">安全认证 · 无病毒 · 绿色纯净</span>
+      </div>
+    </div>
+    
+    <!-- 视频教程提示框 -->
+    <button id="videoTutorialBtn" class="mt-4 inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg cursor-pointer hover:bg-primary/90 transition-colors shadow-md">
+      <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-3">
+        <i class="fa fa-play text-white"></i>
+      </div>
+      <span>点击观看视频教程</span>
+    </button>
+  </main>
+
+  <!-- 视频模态框 -->
+  <div id="videoModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="relative w-full max-w-4xl max-h-[80vh]">
+      <button id="closeVideoModal" class="absolute -top-12 right-0 text-neutral-700 text-3xl hover:text-primary transition-colors">
+        <i class="fa fa-times"></i>
+      </button>
+      <div class="bg-white p-4 rounded-lg shadow-lg">
+        <iframe src="https://player.bilibili.com/player.html?bvid=BV1WhYwz1EJq&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" class="w-full rounded" style="aspect-ratio: 16/9; min-height: 400px;"> </iframe>
+        <p class="mt-4 text-center text-neutral-600">视频教程：如何使用月灵修改器</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主内容区 - 按钮网格 -->
+  <main class="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+    <!-- 按钮1 -->
+    <a href="fenling_modifiers.html" target="_blank" class="flex items-center justify-center p-6 bg-white rounded-xl shadow-md card-hover">
+      <!-- Logo容器 -->
+      <div class="w-16 h-16 rounded-full bg-neutral-50 flex items-center justify-center mr-4">
+        <img src="assets/images/logo/45b8b3550e0e17e34d5bedea788e5eb3_副本.png" 
+             alt="风灵月影logo" 
+             class="w-full h-full object-cover rounded-full" loading="lazy">
+      </div>
+      
+      <!-- 按钮文本 -->
+      <div class="text-left">
+        <h2 class="text-xl font-bold text-primary">风灵月影合集【优先使用】</h2>
+        <p class="text-neutral-600 text-sm mt-1">官网正版收录无毒无插件</p>
+      </div>
+      
+      <!-- 箭头图标 -->
+      <div class="ml-auto text-primary">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+
+    <!-- 按钮2 -->
+    <a href="wemod_platform.html" target="_blank" class="flex items-center justify-center p-6 bg-white rounded-xl shadow-md card-hover">
+      <!-- Logo容器 -->
+      <div class="w-16 h-16 rounded-full bg-neutral-50 flex items-center justify-center mr-4">
+        <img src="assets/images/logo/wemod.png" alt="WeMod logo" class="w-full h-full object-contain" loading="lazy">
+      </div>
+      
+      <!-- 按钮文本 -->
+      <div class="text-left">
+        <h2 class="text-xl font-bold text-primary">Wemod平台【风灵搜不到就用它】</h2>
+        <p class="text-neutral-600 text-sm mt-1">风灵只收录热门游戏不是都有，Wemod收录万款游戏</p>
+      </div>
+      
+      <!-- 箭头图标 -->
+      <div class="ml-auto text-primary">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+
+    <!-- 按钮3 -->
+    <a href="faq.html" class="flex items-center justify-center p-6 bg-white rounded-xl shadow-md card-hover">
+      <!-- Logo容器 -->
+      <div class="w-16 h-16 rounded-full bg-neutral-50 flex items-center justify-center mr-4">
+        <i class="fa fa-question-circle text-3xl text-primary"></i>
+      </div>
+      
+      <!-- 按钮文本 -->
+      <div class="text-left">
+        <h2 class="text-xl font-bold text-primary">常见问题</h2>
+        <p class="text-neutral-600 text-sm mt-1">点击查看各类使用问题</p>
+      </div>
+      
+      <!-- 箭头图标 -->
+      <div class="ml-auto text-primary">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+
+    <!-- 按钮4 -->
+    <button id="searchBoxBtn" class="flex items-center justify-center p-6 bg-white rounded-xl shadow-md card-hover w-full">
+      <!-- Logo容器 -->
+      <div class="w-16 h-16 rounded-full bg-neutral-50 flex items-center justify-center mr-4">
+        <i class="fa fa-search text-3xl text-primary"></i>
+      </div>
+      
+      <!-- 按钮文本 -->
+      <div class="text-left">
+        <h2 class="text-xl font-bold text-primary">风灵月影搜索盒子【非原创/不推荐】</h2>
+        <p class="text-neutral-600 text-sm mt-1">仅提供给不想使用网页版的用户·免费非原创有很多问题</p>
+      </div>
+      
+      <!-- 箭头图标 -->
+      <div class="ml-auto text-primary">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </button>
+
+  </main>
+
+  <!-- 风灵搜索盒子弹窗 -->
+  <div id="searchBoxModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-search text-2xl text-primary"></i>
+        </div>
+        <h3 class="text-xl font-bold text-neutral-800 mb-2">风灵月影搜索盒子</h3>
+        <p class="text-neutral-600">请注意：此工具非原创，可能存在兼容性问题</p>
+      </div>
+      
+      <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-6">
+        <p class="text-yellow-800 text-center mb-2">⚠️ 【不推荐使用】</p>
+        <p class="text-yellow-700 text-sm text-center mb-2">• 此工具非月灵工坊原创开发</p>
+        <p class="text-yellow-700 text-sm text-center mb-2">• 可能与部分杀毒软件存在误报</p>
+        <p class="text-yellow-700 text-sm text-center">• 仅提供给不想使用网页版的用户</p>
+      </div>
+      
+      <div class="mb-6">
+        <a href="风灵搜索盒子/风灵搜索盒子（免费提供）.exe" download class="flex items-center justify-center w-full p-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+          <i class="fa fa-download mr-2"></i>
+          <span>下载风灵搜索盒子（免费）</span>
+        </a>
+      </div>
+      
+      <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-6">
+        <p class="text-blue-800 text-sm text-center">🔍 推荐优先使用官方网页版，稳定性更佳</p>
+      </div>
+      
+      <button id="closeSearchBoxModal" class="w-full p-3 bg-neutral-200 text-neutral-800 rounded-lg font-medium hover:bg-neutral-300 transition-colors">
+        关闭
+      </button>
+    </div>
+  </div>
+
+  <!-- 赞助模态框 -->
+  <div id="sponsorModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-heart text-2xl text-orange-500"></i>
+        </div>
+        <h3 class="text-xl font-bold text-neutral-800 mb-2">支持月灵工坊</h3>
+        <p class="text-neutral-600">感谢您的支持，我们会继续努力优化体验！</p>
+      </div>
+      
+      <div class="bg-orange-50 p-4 rounded-lg border border-orange-100 mb-6">
+        <p class="text-neutral-700 text-center mb-2">❤️ 所有修改器均为个人人工收集整理</p>
+        <p class="text-neutral-700 text-center mb-2">🖥️ 服务器和维护费用全由我们承担</p>
+        <p class="text-neutral-700 text-center">🌟 您的支持是我们持续更新的动力</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <!-- 微信收款 -->
+          <div class="text-center">
+            <h4 class="font-medium text-neutral-800 mb-2">微信支付</h4>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200 shadow-md">
+              <img src="assets/images/qrcode/微信.png" alt="微信收款码" class="w-full h-auto max-w-[200px] mx-auto" loading="lazy">
+            </div>
+          </div>
+          
+          <!-- 支付宝收款 -->
+          <div class="text-center">
+            <h4 class="font-medium text-neutral-800 mb-2">支付宝</h4>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200 shadow-md">
+              <img src="assets/images/qrcode/支付宝.png" alt="支付宝收款码" class="w-full h-auto max-w-[200px] mx-auto" loading="lazy">
+            </div>
+          </div>
+        </div>
+      
+      <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-6">
+        <p class="text-blue-800 text-sm text-center">📝 如有任何问题，请加入QQ群联系我们</p>
+      </div>
+      
+      <button id="closeSponsorModal" class="w-full p-3 bg-neutral-200 text-neutral-800 rounded-lg font-medium hover:bg-neutral-300 transition-colors">
+        关闭
+      </button>
+    </div>
+  </div>
+
+  <!-- 信任和安全信息 -->
+  <div class="w-full max-w-3xl mx-auto bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 shadow-md mt-12 relative z-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center">
+        <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-md mr-4">
+          <i class="fa fa-shield text-2xl text-primary"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-xl mb-1">安全保障</h3>
+          <p class="text-neutral-600">我们承诺所有提供的文件均经过安全检测</p>
+        </div>
+      </div>
+      
+      <div class="flex gap-4">
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm mb-2">
+            <i class="fa fa-check text-secondary"></i>
+          </div>
+          <p class="text-sm text-neutral-600">无病毒</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm mb-2">
+            <i class="fa fa-check text-secondary"></i>
+          </div>
+          <p class="text-sm text-neutral-600">无恶意软件</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm mb-2">
+            <i class="fa fa-check text-secondary"></i>
+          </div>
+          <p class="text-sm text-neutral-600">无捆绑软件</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-white py-8 mt-16">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="text-neutral-600">© 2025 Yoke&Lumen修改器整合工坊</p>
+      <p class="text-neutral-500 text-sm mt-1">本平台由月灵工坊独家优化，所有内容受版权保护</p>
+      <p class="text-neutral-500 text-sm mt-1">本平台仅供学习和研究使用，请支持正版游戏</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 视频教程按钮点击事件
+    
+    // 赞助按钮交互
+    const sponsorBtn = document.getElementById('sponsorBtn');
+    const sponsorModal = document.getElementById('sponsorModal');
+    const closeSponsorModal = document.getElementById('closeSponsorModal');
+    
+    sponsorBtn.addEventListener('click', () => {
+      sponsorModal.classList.remove('hidden');
+    });
+    
+    closeSponsorModal.addEventListener('click', () => {
+      sponsorModal.classList.add('hidden');
+    });
+    
+    // 点击弹窗外部关闭
+    sponsorModal.addEventListener('click', (e) => {
+      if (e.target === sponsorModal) {
+        sponsorModal.classList.add('hidden');
+      }
+    });
+    
+    // ESC键关闭弹窗
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !sponsorModal.classList.contains('hidden')) {
+        sponsorModal.classList.add('hidden');
+      }
+    });
+
+    // 视频教程按钮点击事件
+    const videoTutorialBtn = document.getElementById('videoTutorialBtn');
+    const videoModal = document.getElementById('videoModal');
+    const closeVideoModal = document.getElementById('closeVideoModal');
+    const bilibiliIframe = document.querySelector('#videoModal iframe');
+    const iframeSrc = bilibiliIframe.src;
+    
+    // 点击按钮显示视频模态框并重新加载视频
+    videoTutorialBtn.addEventListener('click', () => {
+      videoModal.classList.remove('hidden');
+      // 重新加载iframe以重置视频（但保持autoplay=0）
+      bilibiliIframe.src = iframeSrc;
+    });
+    
+    // 点击关闭按钮隐藏模态框并停止视频
+    closeVideoModal.addEventListener('click', () => {
+      // 重置iframe以停止视频播放
+      bilibiliIframe.src = iframeSrc;
+      videoModal.classList.add('hidden');
+    });
+    
+    // 点击模态框背景隐藏模态框并停止视频
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        // 重置iframe以停止视频播放
+        bilibiliIframe.src = iframeSrc;
+        videoModal.classList.add('hidden');
+      }
+    });
+    
+    // 添加键盘Esc键关闭模态框并停止视频
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
+        // 重置iframe以停止视频播放
+        bilibiliIframe.src = iframeSrc;
+        videoModal.classList.add('hidden');
+      }
+    });
+    
+    // 风灵搜索盒子弹窗交互
+    const searchBoxBtn = document.getElementById('searchBoxBtn');
+    const searchBoxModal = document.getElementById('searchBoxModal');
+    const closeSearchBoxModal = document.getElementById('closeSearchBoxModal');
+    
+    searchBoxBtn.addEventListener('click', () => {
+      searchBoxModal.classList.remove('hidden');
+    });
+    
+    closeSearchBoxModal.addEventListener('click', () => {
+      searchBoxModal.classList.add('hidden');
+    });
+    
+    searchBoxModal.addEventListener('click', (e) => {
+      if (e.target === searchBoxModal) {
+        searchBoxModal.classList.add('hidden');
+      }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !searchBoxModal.classList.contains('hidden')) {
+        searchBoxModal.classList.add('hidden');
+      }
+    });
+  </script>
+    
+    <!-- 游戏元素背景脚本 - 延迟加载 -->
+    <script src="assets/js/modules/search-functions.js"></script>
+    <script src="assets/js/game-elements-bg.js" defer></script>
+    
+    <!-- 滚动动画优化脚本 - 延迟加载 -->
+    <script src="assets/js/scroll-animation-optimization.js" defer></script>
+
+</body>
+</html>

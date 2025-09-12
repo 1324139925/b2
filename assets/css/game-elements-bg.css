@@ -1,0 +1,153 @@
+/* 游戏元素背景样式 - 低透明度、小尺寸 */
+
+/* 定义全局背景容器 */
+.game-elements-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* 像素方块元素 */
+.pixel-block {
+  position: absolute;
+  background-color: rgba(59, 130, 246, 0.15);
+  transform: rotate(45deg);
+  animation: float 15s infinite ease-in-out;
+  will-change: transform;
+}
+
+/* 抽象控制器按钮 */
+.controller-button {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(16, 185, 129, 0.15);
+  animation: float 20s infinite ease-in-out;
+  will-change: transform;
+}
+
+.controller-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+}
+
+/* 游戏手柄方向键 */
+.directional-pad {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  opacity: 0.15;
+  will-change: transform;
+}
+
+.directional-pad::before,
+.directional-pad::after {
+  content: '';
+  position: absolute;
+  background-color: #3B82F6;
+}
+
+.directional-pad::before {
+  width: 100%;
+  height: 4px;
+  top: 8px;
+}
+
+.directional-pad::after {
+  height: 100%;
+  width: 4px;
+  left: 8px;
+}
+
+/* 像素星星 */
+.pixel-star {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: rgba(251, 191, 36, 0.2);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+  animation: float 25s infinite ease-in-out;
+  will-change: transform;
+}
+
+/* 浮动动画 */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(10px, 10px) rotate(5deg);
+  }
+  50% {
+    transform: translate(0, 20px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-10px, 10px) rotate(-5deg);
+  }
+}
+
+/* 滚动文字动画 - 无缝滚动实现 */
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.marquee-content {
+  animation: scroll-left 60s linear infinite;
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+  width: 200%; /* 确保包含足够文本，实现无缝滚动效果 */
+  will-change: transform;
+}
+
+/* 当滚动文字区域不在视口中时暂停动画 */
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-container:not(in-viewport) .marquee-content {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* 为不同位置的元素设置不同的动画延迟 */
+.pixel-block:nth-child(odd),
+.controller-button:nth-child(odd),
+.directional-pad:nth-child(odd),
+.pixel-star:nth-child(odd) {
+  animation-delay: 2s;
+}
+
+.pixel-block:nth-child(3n),
+.controller-button:nth-child(3n),
+.directional-pad:nth-child(3n),
+.pixel-star:nth-child(3n) {
+  animation-delay: 5s;
+}
+
+.pixel-block:nth-child(5n),
+.controller-button:nth-child(5n),
+.directional-pad:nth-child(5n),
+.pixel-star:nth-child(5n) {
+  animation-delay: 8s;
+}

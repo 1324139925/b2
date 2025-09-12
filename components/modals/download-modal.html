@@ -1,0 +1,37 @@
+<!-- 下载按钮弹窗 -->
+<div id="downloadModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+    <div class="text-center mb-4">
+      <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <i class="fa fa-download text-2xl text-primary"></i>
+      </div>
+      <h3 class="text-xl font-bold text-neutral-800 mb-2">获取文件</h3>
+      <p class="text-neutral-600">请选择以下方式之一获取安装包</p>
+    </div>
+    
+    <div class="space-y-3 mb-6">
+      <a href="https://www.123684.com/s/txZAjv-y4HWd" target="_blank" class="block w-full p-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors text-center">
+        <i class="fa fa-cloud-download mr-2"></i> 主网页下载
+      </a>
+      <a href="https://share.feijipan.com/s/8XEyPJ1u" target="_blank" class="block w-full p-3 bg-neutral-800 text-white rounded-lg font-medium hover:bg-neutral-700 transition-colors text-center">
+        <i class="fa fa-cloud-download mr-2"></i> 备用网页下载
+      </a>
+      <a href="https://pan.baidu.com/s/1u8V6y0jQo0BAeesQyoIC-A?pwd=bupp" target="_blank" class="block w-full p-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-center">
+        <i class="fa fa-cloud-download mr-2"></i> 百度网盘下载
+      </a>
+    </div>
+    
+    <!-- 度盘提取码提示 -->
+    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-6">
+      <p class="text-blue-800 text-sm"><i class="fa fa-key mr-1"></i> 百度网盘提取码：bupp</p>
+    </div>
+    
+    <div class="bg-amber-50 p-3 rounded-lg border border-amber-100 mb-6">
+      <p class="text-amber-800 text-sm"><i class="fa fa-info-circle mr-1"></i> 如果您在下载或安装过程中遇到问题，请联系我们的客服获取帮助。</p>
+    </div>
+    
+    <button id="closeModal" class="w-full p-3 bg-neutral-200 text-neutral-800 rounded-lg font-medium hover:bg-neutral-300 transition-colors">
+      取消
+    </button>
+  </div>
+</div>
