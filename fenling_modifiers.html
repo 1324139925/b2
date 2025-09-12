@@ -159,21 +159,7 @@
     </div>
   </div>
   
-  <!-- 游戏分类按钮区域 -->
-  <div class="w-full relative z-10 mb-6">
-    <div class="bg-white rounded-xl shadow-sm p-3 border border-neutral-200">
-      <div id="categoryButtons" class="flex flex-wrap gap-2">
-        <button class="category-btn px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-category="all">全部游戏</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="热门游戏">热门游戏</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="动作冒险">动作冒险</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="角色扮演">角色扮演</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="策略战术">策略战术</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="模拟经营">模拟经营</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="体育竞技">体育竞技</button>
-        <button class="category-btn px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200 transition-colors" data-category="恐怖游戏">恐怖游戏</button>
-      </div>
-    </div>
-  </div>
+  <!-- 游戏列表区域 -->
 
   <!-- 游戏列表区域 -->
   <main class="w-full flex-grow relative z-10">
@@ -196,12 +182,13 @@
       </div>
     </div>
     
-    <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <!-- 游戏网格容器 -->
+    <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
       <!-- 游戏卡片将通过JavaScript动态生成 -->
     </div>
     
     <!-- 分页控件 -->
-    <div id="pagination" class="hidden mt-10 flex flex-wrap items-center justify-center gap-2">
+    <div id="pagination" class="mt-10 flex flex-wrap items-center justify-center gap-2">
       <button id="prevPage" class="px-4 py-2 bg-white border border-neutral-200 rounded-lg text-neutral-800 hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
         <i class="fa fa-chevron-left mr-1"></i> 上一页
       </button>
@@ -383,8 +370,9 @@
     </div>
 
     <!-- 脚本引入 -->
-    <script src="assets/js/modules/search-functions.js"></script>
     <script src="assets/js/modules/state-management.js"></script>
+    <script src="assets/js/modules/search-functions.js"></script>
+    
     <script src="assets/js/modules/game-grid.js"></script>
     <script src="assets/js/modules/modal-handlers.js"></script>
     <script src="assets/js/modules/pagination.js"></script>

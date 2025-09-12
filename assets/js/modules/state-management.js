@@ -13,7 +13,7 @@ function showContent(loadingIndicator, emptyState, contentContainer, pagination)
 }
 
 // 显示空状态 - 传统分页模式
-function showEmptyState(loadingIndicator, contentContainer, pagination, emptyState) {
+function showEmptyState(loadingIndicator, emptyState, contentContainer, pagination) {
   loadingIndicator.classList.add('hidden');
   contentContainer.classList.add('hidden');
   
