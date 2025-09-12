@@ -7,6 +7,7 @@
 // 常量定义
 const SEARCH_DELAY_MS = 300;  // 搜索延迟毫秒数
 const CACHE_VALID_TIME = 5 * 60 * 1000;  // 缓存有效期5分钟
+let needsAutoRefresh = true;  // 控制是否需要自动刷新的标志位
 
 function showContent(loadingIndicator, emptyState, contentContainer, pagination) {
   loadingIndicator.classList.add('hidden');
@@ -822,6 +823,8 @@ function loadGameData() {
         filteredGames = [...gamesData];
         
         showContent(loadingIndicator, emptyState, gameGrid, pagination);
+        
+        // 渲染游戏网格和分页控件
         renderGameGrid(gameGrid, filteredGames, currentPage, gamesPerPage);
         renderPagination(pageNumbers, currentPageNum, totalPagesNum, prevPageBtn, nextPageBtn, filteredGames, gamesPerPage, currentPage);
       });
@@ -1021,6 +1024,18 @@ function loadGameData() {
         renderPagination(pageNumbers, currentPageNum, totalPagesNum, prevPageBtn, nextPageBtn, filteredGames, gamesPerPage, currentPage);
         
         console.log(`成功导入 ${gamesData.length} 个游戏条目`);
+        
+        // 自动刷新功能：页面首次加载完成后2秒自动刷新一次
+        if (needsAutoRefresh) {
+          console.log('准备进行自动刷新以确保数据完全显示...');
+          setTimeout(() => {
+            const refreshButton = document.getElementById('refreshButton');
+            if (refreshButton) {
+              refreshButton.click(); // 模拟点击刷新按钮
+              needsAutoRefresh = false; // 设置标志位为false，确保只自动刷新一次
+            }
+          }, 2000); // 2秒后自动刷新
+        }
       } catch (error) {
         console.error('数据处理或渲染错误:', error);
         handleLoadFailure(new Error('数据处理失败，请刷新页面重试'));
@@ -1053,8 +1068,8 @@ function loadGameData() {
     const fragment = document.createDocumentFragment();
     
     // 执行分页计算
-    const startIndex = (currentPage.pageNum - 1) * gamesPerPage;
-    const endIndex = startIndex + gamesPerPage;
+    const startIndex = (currentPage - 1) * gamesPerPage;
+    const endIndex = Math.min(startIndex + gamesPerPage, filteredGames.length);
     const currentGames = filteredGames.slice(startIndex, endIndex);
     
     // 清空游戏网格容器

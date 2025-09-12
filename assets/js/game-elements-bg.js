@@ -1,10 +1,23 @@
 // 游戏元素背景生成脚本
 
-// 由于我们现在使用普通脚本模式，不需要导入语句
-// debounce函数将从search-functions.js全局访问
-
 // 等待DOM加载完成
 document.addEventListener('DOMContentLoaded', function() {
+  // 防抖函数定义
+  function debounce(func, wait, immediate = false) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        timeout = null;
+        if (!immediate) func.apply(this, args);
+      };
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(this, args);
+    };
+  }
+
   // 创建背景容器
   const bgContainer = document.createElement('div');
   bgContainer.className = 'game-elements-bg';
@@ -12,7 +25,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 生成抽象游戏元素
   generateGameElements(bgContainer);
-});
+
+  // 更新现有元素的位置和大小函数
+  function updateGameElements() {
+    const container = document.querySelector('.game-elements-bg');
+    if (!container) return;
+    
+    const elements = container.querySelectorAll('div');
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // 批量更新元素位置，减少重排次数
+    elements.forEach(element => {
+      // 重新计算随机位置以适应新窗口大小
+      const x = Math.random() * (windowWidth - 100);
+      const y = Math.random() * (windowHeight - 100);
+      element.style.left = x + 'px';
+      element.style.top = y + 'px';
+    });
+  }
+
+  // 窗口大小改变时更新现有元素，而不是重新生成
+  // 使用防抖函数减少频繁调整的性能消耗
+  const debouncedUpdateGameElements = debounce(updateGameElements, 100);
+  window.addEventListener('resize', debouncedUpdateGameElements);
+
+  // 在页面卸载前清理事件监听器
+  window.addEventListener('beforeunload', () => {
+    window.removeEventListener('resize', debouncedUpdateGameElements);
+  });
 
 // 生成游戏元素函数
 function generateGameElements(container) {
@@ -102,32 +143,4 @@ function generateGameElements(container) {
   // 一次性将所有元素添加到DOM，减少重排和重绘
   container.appendChild(fragment);
 }
-
-// 更新现有元素的位置和大小函数
-function updateGameElements() {
-  const container = document.querySelector('.game-elements-bg');
-  if (!container) return;
-  
-  const elements = container.querySelectorAll('div');
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
-  
-  // 批量更新元素位置，减少重排次数
-  elements.forEach(element => {
-    // 重新计算随机位置以适应新窗口大小
-    const x = Math.random() * (windowWidth - 100);
-    const y = Math.random() * (windowHeight - 100);
-    element.style.left = x + 'px';
-    element.style.top = y + 'px';
-  });
-}
-
-// 窗口大小改变时更新现有元素，而不是重新生成
-// 使用防抖函数减少频繁调整的性能消耗
-const debouncedUpdateGameElements = debounce(updateGameElements, 100);
-window.addEventListener('resize', debouncedUpdateGameElements);
-
-// 在页面卸载前清理事件监听器
-window.addEventListener('beforeunload', () => {
-  window.removeEventListener('resize', debouncedUpdateGameElements);
 });
