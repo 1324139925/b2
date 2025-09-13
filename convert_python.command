@@ -4,7 +4,7 @@
 export PS1='\[\033[1;32m\]转换中...\[\033[0m\] '
 
 echo "===== Excel 到 JSON 转换工具 (Python版) ====="
-echo "此工具将自动将 '修改器合集.xlsx' 转换为 'modifiers_data.json'"
+echo "此工具将自动将 '修改器合集.xlsx' 转换为 'modifiers_data.min.json'（压缩优化版本）"
 echo "=================================="
 
 # 检查当前目录
@@ -48,6 +48,16 @@ exit_status=$?
 if [ $exit_status -eq 0 ];
 then
     echo "\n✅ 转换完成!"
+    echo "\n开始压缩优化JSON文件..."
+    python3 "$CURRENT_DIR/data/compress_json.py"
+    
+    compress_exit_status=$?
+    if [ $compress_exit_status -eq 0 ];
+    then
+        echo "\n✅ JSON文件压缩优化完成!"
+    else
+        echo "\n❌ JSON文件压缩优化失败!"
+    fi
 else
     echo "\n❌ 转换失败!"
 fi
