@@ -6,6 +6,14 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false
+  conditions = { Cookie = ["nf_route=!landing"] }
+
+[[redirects]]
+  from = "/数据/*"
+  to = "/数据/:splat"
+  status = 200
+  force = false
 
 [build.environment]
   NODE_ENV = "production"
