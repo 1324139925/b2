@@ -12,17 +12,23 @@
 ## 项目结构
 
 ```
-├── assets/          # 资源文件夹
+├── 资源/             # 资源文件夹
 │   ├── css/         # 样式文件
 │   ├── images/      # 图片资源
 │   ├── js/          # JavaScript脚本
 │   └── videos/      # 视频资源（已迁移到B站）
-├── components/      # 组件文件
-├── faq.html         # 常见问题解答页面
-├── fenling_modifiers.html  # 风灵月影修改器合集页面
+├── 组件/             # 组件文件
+│   ├── modals/      # 模态框组件
+│   ├── 页脚.html     # 页脚组件
+│   └── 页眉.html     # 页眉组件
+├── 常见问题解答.html         # 常见问题解答页面
+├── 风灵月影修改器.html       # 风灵月影修改器合集页面
 ├── index.html       # 网站首页
-├── wemod_platform.html     # WeMod平台页面
-└── 修改器合集.xlsx   # 修改器数据Excel文件
+├── WeMod平台页面.html     # WeMod平台页面
+├── 预览页面.html          # 预览页面
+├── 修改器合集.xlsx   # 修改器数据Excel文件
+├── 服务器.js         # 服务器脚本
+└── 测试中文路径.js     # 中文路径测试脚本
 ```
 
 ## 部署指南

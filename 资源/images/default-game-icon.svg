@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- 背景 -->
+  <rect width="128" height="128" rx="8" ry="8" fill="#2a2a2a"/>
+  
+  <!-- 游戏控制器轮廓 -->
+  <rect x="32" y="40" width="64" height="48" rx="4" ry="4" fill="#4a4a4a"/>
+  
+  <!-- 游戏手柄按钮 -->
+  <circle cx="88" cy="56" r="6" fill="#ff6b6b"/>
+  <circle cx="100" cy="68" r="6" fill="#ff9e53"/>
+  <circle cx="88" cy="80" r="6" fill="#4ecdc4"/>
+  <circle cx="76" cy="68" r="6" fill="#45b7d1"/>
+  
+  <!-- 游戏手柄方向键 -->
+  <rect x="44" y="56" width="16" height="16" rx="2" ry="2" fill="none" stroke="#777" stroke-width="2"/>
+  <circle cx="52" cy="64" r="4" fill="#777"/>
+  
+  <!-- 中心标志 -->
+  <path d="M64 32 L72 40 L64 48 L56 40 Z" fill="#555"/>
+</svg>

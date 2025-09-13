@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>常见问题 - Yoke&Lumen修改器整合工坊</title>
+  <!-- 网站图标 -->
+  <link rel="icon" type="image/svg+xml" href="渐变球图标.svg">
+  <!-- 引入Tailwind CSS (使用JIT模式) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <!-- 使用jsdelivr CDN并添加缓存控制 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+  
+  <!-- 配置Tailwind自定义颜色、字体和JIT模式 -->
+  <script>
+    tailwind.config = {
+      jit: true, // 启用JIT模式减少CSS体积
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#4080FF',
+            neutral: {
+              50: '#F9FAFB',
+              100: '#F3F4F6',
+              200: '#E5E7EB',
+              300: '#D1D5DB',
+              400: '#9CA3AF',
+              500: '#6B7280',
+              600: '#4B5563',
+              700: '#374151',
+              800: '#1F2937',
+              900: '#111827'
+            }
+          },
+          fontFamily: {
+            sans: ['Noto Sans SC', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+      }
+      .faq-item {
+        transition: all 0.3s ease;
+      }
+      .faq-item:hover .faq-icon {
+        transform: rotate(180deg);
+      }
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+      }
+      .faq-item.open .faq-answer {
+        max-height: 500px;
+      }
+      .faq-icon {
+        transition: transform 0.3s ease;
+      }
+    }
+  </style>
+  
+  <!-- 引入全局样式 -->
+  <link rel="stylesheet" href="资源/css/样式.css">
+</head>
+  <body class="bg-neutral-100 text-neutral-800 min-h-screen faq">
+  
+  <!-- 加载通用导航栏组件 -->
+  <div id="header-container"></div>
+  
+  <!-- 主内容区 -->
+  <main class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-8 mb-10">
+    <!-- 标题区 -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-primary mb-4">常见问题解答</h1>
+      <p class="text-neutral-600">风灵月影修改器与WeMod平台使用指南与常见问题解决方案</p>
+    </div>
+    
+    <!-- 搜索框 -->
+    <div class="relative mb-10">
+      <input type="text" id="faq-search" placeholder="搜索问题..." class="w-full px-6 py-3 rounded-full border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+      <i class="fa fa-search absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400"></i>
+    </div>
+    
+    <!-- 分类选项卡 -->
+    <div class="flex flex-wrap gap-3 mb-10">
+      <button class="faq-tab px-5 py-2 rounded-full bg-primary text-white" data-target="all">全部问题</button>
+      <button class="faq-tab px-5 py-2 rounded-full bg-neutral-200 hover:bg-neutral-300 transition" data-target="fengling">风灵月影</button>
+      <button class="faq-tab px-5 py-2 rounded-full bg-neutral-200 hover:bg-neutral-300 transition" data-target="wemod">WeMod平台</button>
+      <button class="faq-tab px-5 py-2 rounded-full bg-neutral-200 hover:bg-neutral-300 transition" data-target="installation">安装使用</button>
+      <button class="faq-tab px-5 py-2 rounded-full bg-neutral-200 hover:bg-neutral-300 transition" data-target="security">安全问题</button>
+    </div>
+    
+    <!-- 常见问题列表 -->
+    <div class="space-y-4">
+      <!-- 风灵月影相关问题 -->
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="fengling">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">风灵月影打不开或启动没反应怎么办？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">风灵月影打不开或启动没反应，90%的原因是杀毒软件拦截！请务必按照以下步骤操作：</p>
+          <ol class="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li>右键"开始菜单"，打开"任务管理器"</li>
+            <li>找到风灵月影进程，右键选择"结束任务"</li>
+            <li><strong class="text-red-500">关键步骤：关闭系统杀毒软件（Windows Defender）的实时防护功能</strong></li>
+            <li><strong class="text-red-500">关键步骤：关闭所有第三方安全软件（如360、腾讯电脑管家、金山毒霸等）的实时防护</strong></li>
+            <li>再次尝试以管理员身份打开风灵月影</li>
+            <li>如果仍然无法打开，建议卸载并重新安装</li>
+          </ol>
+          <p class="text-neutral-700 mt-3">注意：安装修改器前必须关闭所有杀毒软件的实时防护，否则会导致文件被删除或篡改！</p>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="fengling">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">如何关闭Windows Defender实时防护？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">关闭Windows Defender实时防护的详细步骤：</p>
+          <ol class="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li>点击Windows开始菜单，打开"设置"</li>
+            <li>选择"更新和安全" > "Windows安全中心"</li>
+            <li>点击"病毒和威胁防护" > "管理设置"</li>
+            <li>关闭"实时保护"开关（会变成灰色）</li>
+            <li>如果有"云提供的保护"和"自动提交样本"选项，也一并关闭</li>
+            <li>使用完修改器后，可以重新开启这些保护功能</li>
+          </ol>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="fengling">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">如何关闭第三方安全软件的实时防护？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">关闭常见第三方安全软件实时防护的方法：</p>
+          <h4 class="font-semibold mt-4">360安全卫士：</h4>
+          <ol class="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li>打开360安全卫士主界面</li>
+            <li>点击右上角"设置" > "实时保护设置"</li>
+            <li>关闭"文件实时防护"、"网页实时防护"等所有防护选项</li>
+          </ol>
+          <h4 class="font-semibold mt-4">腾讯电脑管家：</h4>
+          <ol class="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li>打开腾讯电脑管家主界面</li>
+            <li>点击"病毒查杀" > "设置" > "实时防护"</li>
+            <li>关闭所有实时防护开关</li>
+          </ol>
+          <p class="text-neutral-700 mt-3">注意：使用修改器期间请保持所有安全软件的实时防护处于关闭状态！</p>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="fengling">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">风灵月影找不到游戏进程怎么办？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">找不到游戏进程的常见原因及解决方法：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li><strong class="text-red-500">首先确保已关闭所有杀毒软件的实时防护功能</strong></li>
+            <li><strong class="text-red-500">重要提示：盗版/破解版游戏很可能导致风灵月影无法识别进程</strong></li>
+            <li>检查杀毒软件设置，确保允许风灵月影运行</li>
+            <li>尝试以管理员身份运行风灵月影</li>
+            <li>确认游戏与风灵月影版本兼容</li>
+            <li>先启动修改器，再启动游戏</li>
+            <li>如果是盗版/破解版游戏，可以尝试使用WeMod平台，用英文名称搜索修改器并手动添加游戏启动文件</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="fengling">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">风灵月影在Win11系统下无法使用怎么办？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">Win11系统的兼容性问题解决方法：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li>确认操作系统与风灵月影版本兼容</li>
+            <li>寻找适用于Win11的风灵月影版本</li>
+            <li>确认计算机已安装最新的驱动程序和更新</li>
+            <li>以管理员身份运行风灵月影</li>
+            <li>尝试在兼容模式下运行</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="wemod">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">盗版/学习版游戏无法使用风灵月影怎么办？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">对于盗版或学习版游戏，风灵月影可能无法正常使用，这时候可以尝试使用WeMod解决：</p>
+          <ol class="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li>打开WeMod平台，使用游戏的<strong>英文名称</strong>搜索对应的修改器</li>
+            <li>在搜索结果中点击游戏，然后点击"手动添加游戏"按钮</li>
+            <li><strong class="text-red-500">重要提示：必须添加游戏目录内的实际启动文件（.exe），不能添加快捷方式</strong></li>
+            <li>找到游戏安装目录，选择游戏的主程序文件（通常是与游戏同名的.exe文件）</li>
+            <li>添加完成后，WeMod会尝试识别游戏进程，成功后即可使用修改器功能</li>
+          </ol>
+          <p class="text-neutral-700 mt-3">注意：不同版本的盗版游戏可能兼容性不同，部分游戏可能仍然无法被WeMod识别。</p>
+        </div>
+      </div>
+      
+      <!-- WeMod相关问题 -->
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="wemod">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">WeMod一直加载没法进入游戏怎么办？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">WeMod加载问题的解决方法：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li>确保网络连接正常，WeMod需要联网才能使用</li>
+            <li>检查游戏版本与WeMod支持的版本是否兼容</li>
+            <li>关闭安全软件或把WeMod添加到信任列表</li>
+            <li>尝试卸载并重新安装WeMod</li>
+            <li>以管理员身份运行WeMod</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="wemod">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">WeMod修改器用不了怎么办？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">WeMod修改器无法使用的解决方法：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li>重新下载并安装WeMod，确保与操作系统和游戏版本兼容</li>
+            <li>前往WeMod官方网站查看是否有更新版本或修复方案</li>
+            <li>检查游戏反作弊系统（如EAC、BattlEye）是否阻止修改器运行</li>
+            <li>联系WeMod的技术支持人员寻求帮助</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="wemod">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">WeMod必须充会员才能用吗？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700">不是。WeMod提供免费功能，您不需要充会员也可以使用基本的修改器功能。会员服务主要提供一些额外的便利功能，如无广告体验、优先更新等，但不影响基础修改功能的使用。</p>
+        </div>
+      </div>
+      
+
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="wemod">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">使用WeMod会被游戏封号吗？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700">使用任何修改器都存在一定的封号风险，尤其是在线游戏。WeMod主要推荐用于单机游戏，对于在线游戏：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700 mt-2">
+            <li>查看游戏的服务条款，了解是否禁止使用修改器</li>
+            <li>大多数在线游戏都有反作弊系统，可能会检测并封禁使用修改器的账号</li>
+            <li>使用修改器前请做好账号被封禁的心理准备</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- 安装使用问题 -->
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="installation">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">如何正确安装修改器？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">正确安装修改器的步骤：</p>
+          <ol class="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li>从官方或可信来源下载修改器</li>
+            <li><strong class="text-red-500">关键步骤：关闭系统Windows Defender的实时防护</strong></li>
+            <li><strong class="text-red-500">关键步骤：关闭所有第三方安全软件（如360、腾讯电脑管家等）的实时防护</strong></li>
+            <li>以管理员身份运行安装程序</li>
+            <li>按照安装向导完成安装</li>
+            <li>安装完成后，将修改器添加到杀毒软件的信任列表</li>
+          </ol>
+          <p class="text-red-500 font-semibold mt-3">重要提示：安装和使用修改器期间必须全程关闭所有杀毒软件的实时防护功能，否则会导致文件被删除或无法正常使用！</p>
+        </div>
+      </div>
+      
+      <!-- 安全问题 -->
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="security">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">使用修改器有哪些安全风险？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">使用修改器的主要安全风险：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li>下载来源不可靠可能导致感染恶意软件或病毒</li>
+            <li>可能被杀毒软件误报或拦截</li>
+            <li>在线游戏可能导致账号被封禁</li>
+            <li>可能与系统或其他软件产生兼容性问题</li>
+            <li>部分修改器可能会收集用户数据</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="security">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">使用修改器有封号风险吗？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">不会封号！我们提供的修改器都是官方正版收录，仅供单机游戏使用。</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li>所有修改器均为官方正版收录，经过安全检测</li>
+            <li>请严格遵守只在<strong class="text-primary">单机模式</strong>下使用的规则</li>
+            <li><strong class="text-red-500">特别提醒：多人在线模式绝对不能使用修改器</strong></li>
+            <li>修改器不会影响游戏的多人在线功能</li>
+          </ul>
+          <p class="text-green-600 font-semibold mt-3">只要遵守在单机模式下使用的规则，就不会有任何封号风险！</p>
+        </div>
+      </div>
+      
+      <div class="faq-item bg-neutral-50 rounded-xl overflow-hidden" data-category="security">
+        <div class="faq-question flex justify-between items-center p-5 cursor-pointer">
+          <h3 class="text-lg font-semibold">如何安全地使用修改器？</h3>
+          <i class="fa fa-chevron-down text-primary faq-icon transition-transform"></i>
+        </div>
+        <div class="faq-answer px-5 pb-5">
+          <p class="text-neutral-700 mb-3">安全使用修改器的建议：</p>
+          <ul class="list-disc pl-5 space-y-2 text-neutral-700">
+            <li>仅从官方或可信的来源下载修改器</li>
+            <li>使用前进行病毒扫描</li>
+            <li>为单机游戏使用修改器，避免在在线游戏中使用</li>
+            <li>定期更新修改器到最新版本</li>
+            <li>使用完成后及时关闭修改器</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- 加载通用页脚组件 -->
+    <div id="footer-container"></div>
+    
+    <!-- JavaScript -->
+    <script>
+      // 整合所有脚本到一个文件中，减少HTTP请求
+      document.addEventListener('DOMContentLoaded', function() {
+        // 缓存DOM查询结果，避免重复查询
+        const faqItems = document.querySelectorAll('.faq-item');
+        const tabs = document.querySelectorAll('.faq-tab');
+        const searchInput = document.getElementById('faq-search');
+        const questions = document.querySelectorAll('.faq-question');
+        
+        // 1. 为每个问题添加点击事件监听器
+        questions.forEach(question => {
+          question.addEventListener('click', function() {
+            const faqItem = this.parentElement;
+            faqItem.classList.toggle('open');
+          });
+        });
+        
+        // 2. 为每个选项卡添加点击事件监听器
+        tabs.forEach(tab => {
+          tab.addEventListener('click', function() {
+            // 移除所有选项卡的激活状态
+            tabs.forEach(t => {
+              t.classList.remove('bg-primary', 'text-white');
+              t.classList.add('bg-neutral-200', 'hover:bg-neutral-300');
+            });
+            
+            // 添加当前选项卡的激活状态
+            this.classList.remove('bg-neutral-200', 'hover:bg-neutral-300');
+            this.classList.add('bg-primary', 'text-white');
+            
+            // 筛选显示的FAQ项目
+            const target = this.getAttribute('data-target');
+            faqItems.forEach(item => {
+              if (target === 'all' || item.getAttribute('data-category') === target) {
+                item.style.display = 'block';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+        
+        // 3. 搜索功能 - 使用防抖优化输入处理
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            const searchTerm = this.value.toLowerCase();
+            
+            // 批量处理DOM更新
+            faqItems.forEach(item => {
+              const questionText = item.querySelector('.faq-question h3').textContent.toLowerCase();
+              const answerText = item.querySelector('.faq-answer').textContent.toLowerCase();
+              
+              item.style.display = 
+                (questionText.includes(searchTerm) || answerText.includes(searchTerm)) ? 
+                'block' : 'none';
+            });
+          }, 150); // 150ms的防抖延迟
+        });
+        
+        // 加载导航栏
+        fetch('组件/页眉.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('header-container').innerHTML = html;
+          })
+          .catch(error => console.error('加载导航栏失败:', error));
+        
+        // 加载页脚
+        fetch('组件/页脚.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+          })
+          .catch(error => console.error('加载页脚失败:', error));
+      });
+    </script>
+    
+    <!-- 游戏元素背景脚本 -->
+    <script src="资源/js/游戏元素背景.js"></script>
+    
+    <!-- 高性能数据加载器模块 - 必须在主脚本之前加载 -->
+    <script src="资源/js/modules/data-loader.js"></script>
+    
+    <!-- 主脚本 -->
+    <script src="资源/js/主脚本.js"></script>
+    
+    <!-- 滚动动画优化脚本 -->
+    <script src="资源/js/滚动动画优化.js"></script>
+  </body>
+</html>

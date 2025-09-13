@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>风灵月影修改器合集 - Yoke&Lumen修改器整合工坊</title>
+  <!-- 网站图标 -->
+  <link rel="icon" type="image/svg+xml" href="渐变球图标.svg">
+  
+  <!-- 预加载关键资源 -->
+  <link rel="preload" href="资源/css/样式.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="渐变球图标.svg" as="image">
+  <link rel="preload" href="资源/images/logo/45b8b3550e0e17e34d5bedea788e5eb3_副本.png" as="image">
+  <link rel="preload" href="资源/images/logo/店标.png" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- 特定页面CSS内联 -->
+  <style>
+    /* 滚动文字动画 */
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+      animation-delay: 0s;
+      width: 200%;
+      will-change: transform;
+    }
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-33.333%);
+      }
+    }
+  </style>
+  
+  <!-- 引入Tailwind CSS (使用JIT模式) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- 引入Font Awesome (fallback for preload) -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+  
+  <!-- 引入XLSX库用于解析Excel文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha256-JIcuPHofX6DbSv4vZ7PzVNzB21WvVdJGG83SQ84f1kE=" crossorigin="anonymous" defer></script>
+  
+  <!-- 配置Tailwind自定义颜色、字体和JIT模式 -->
+  <script>
+    tailwind.config = {
+      jit: true, // 启用JIT模式减少CSS体积
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#4080FF',
+            neutral: {
+              50: '#F9FAFB',
+              100: '#F3F4F6',
+              200: '#E5E7EB',
+              300: '#D1D5DB',
+              400: '#9CA3AF',
+              500: '#6B7280',
+              600: '#4B5563',
+              700: '#374151',
+              800: '#1F2937',
+              900: '#111827'
+            }
+          },
+          fontFamily: {
+            sans: ['Noto Sans SC', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+      }
+    }
+  </style>
+  
+  <!-- 引入Google字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-neutral-50 text-neutral-800 min-h-screen flex flex-col p-4 md:p-6 overflow-x-hidden fenling">
+
+<!-- 缓慢滚动文字 -->
+<div class="relative overflow-hidden bg-red-50 py-2 mb-1 shadow-sm min-h-12 flex items-center">
+  <div class="marquee-container">
+    <div class="marquee-content">
+      <span class="text-red-600 font-bold text-lg mx-8">GTA系列/看门狗系列/钢铁雄心/生化危机/侠盗猎车，都不要问客服！都不要问客服！都不要问客服！问也回答没有！</span>
+      <span class="text-red-600 font-bold text-lg mx-8">GTA系列/看门狗系列/钢铁雄心/生化危机/侠盗猎车，都不要问客服！都不要问客服！都不要问客服！问也回答没有！</span>
+      <span class="text-red-600 font-bold text-lg mx-8">GTA系列/看门狗系列/钢铁雄心/生化危机/侠盗猎车，都不要问客服！都不要问客服！都不要问客服！问也回答没有！</span>
+      <span class="text-red-600 font-bold text-lg mx-8">GTA系列/看门狗系列/钢铁雄心/生化危机/侠盗猎车，都不要问客服！都不要问客服！都不要问客服！问也回答没有！</span>
+    </div>
+  </div>
+</div>
+
+<!-- 独立导航栏 -->
+<!-- 加载通用导航栏组件 -->
+<div id="header-container"></div>
+
+  <!-- 页面标题 -->
+  <div class="text-center mt-6 mb-4 relative z-10">
+    <div class="mb-4">
+        <img src="资源/images/logo/风灵月影页面中间标题2.png" alt="风灵月影修改器合集" class="w-full max-w-lg mx-auto h-auto" style="max-height: 80px; object-fit: contain;" loading="lazy">
+      </div>
+    <p class="text-neutral-600 text-lg max-w-md mx-auto">海量单机游戏修改器 · 安全无毒 · 轻松畅玩</p>
+  </div>
+  
+  
+  <!-- 近期更新信息 -->
+  <div class="w-full relative z-10 mb-2">
+    <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-4 shadow-sm border border-primary/20">
+      <div id="updateInfoContainer" class="text-neutral-700 font-medium">
+        <!-- 更新信息将通过JavaScript直接加载txt文件内容 -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- 搜索区域 -->
+  <div class="w-full relative z-10 mb-6">
+    <div class="bg-white rounded-xl shadow-md p-2 sm:p-4 border border-neutral-200">
+      <div class="flex flex-col md:flex-row gap-3">
+        <div class="flex-1 relative">
+          <input type="text" id="searchInput" placeholder="搜索游戏名称..." class="w-full bg-neutral-50 text-neutral-800 border border-neutral-200 rounded-lg px-4 py-3 pl-20 pr-12 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
+          <i class="fa fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-neutral-400 text-lg"></i>
+          <button 
+            id="refreshButton" 
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-primary transition-colors duration-300"
+            title="刷新数据"
+          >
+            <i class="fa fa-refresh"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 游戏列表区域 -->
+
+  <!-- 游戏列表区域 -->
+  <main class="w-full flex-grow relative z-10">
+    <div id="loadingIndicator" class="hidden flex flex-col items-center justify-center py-20">
+      <div class="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+      <p class="text-primary font-medium">加载中...</p>
+    </div>
+    
+    <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 text-center">
+      <div class="w-32 h-32 flex items-center justify-center mb-6 text-primary/50">
+        <i class="fa fa-folder-open-o text-8xl"></i>
+      </div>
+      <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 max-w-md w-full">
+        <h2 class="text-2xl font-bold text-neutral-800 mb-3">未找到修改器</h2>
+        <p class="text-neutral-600 mb-4">抱歉，我们没有找到您搜索的游戏修改器。</p>
+        <p class="text-blue-700 text-sm mb-4">您可以尝试使用WeMod修改器平台，它提供了更丰富的游戏修改器资源。</p>
+        <a href="WeMod平台页面.html" class="inline-flex items-center justify-center px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm w-full">
+          <i class="fa fa-download mr-2"></i> 前往下载使用wemod平台
+        </a>
+      </div>
+    </div>
+    
+    <!-- 游戏网格容器 -->
+    <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+      <!-- 游戏卡片将通过JavaScript动态生成 -->
+    </div>
+    
+    <!-- 分页控件 -->
+    <div id="pagination" class="mt-10 flex flex-wrap items-center justify-center gap-2">
+      <button id="prevPage" class="px-4 py-2 bg-white border border-neutral-200 rounded-lg text-neutral-800 hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        <i class="fa fa-chevron-left mr-1"></i> 上一页
+      </button>
+      
+      <div id="pageNumbers" class="flex gap-1"></div>
+      
+      <button id="nextPage" class="px-4 py-2 bg-white border border-neutral-200 rounded-lg text-neutral-800 hover:border-primary hover:text-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        下一页 <i class="fa fa-chevron-right ml-1"></i>
+      </button>
+      
+      <div class="ml-6 text-neutral-600">
+        第 <span id="currentPageNum">1</span> / <span id="totalPagesNum">1</span> 页
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="mt-16 text-center text-neutral-500 text-sm relative z-10 pb-8">
+    <p>© 2025 月灵修改器工坊 | 提供安全的游戏辅助工具</p>
+  </footer>
+
+  <!-- 使用说明模态框 -->
+  <div id="usageGuideModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 overflow-hidden transition-all duration-300 transform hover:scale-[1.01]">
+      <div class="bg-gradient-to-r from-primary to-secondary text-white p-4 flex items-center justify-between">
+        <h3 class="text-xl font-bold flex items-center">
+          <i class="fa fa-gamepad mr-2 text-lg"></i>
+          修改器使用指南
+        </h3>
+        <button id="closeUsageGuideModal" class="text-white hover:text-white/80 transition-colors transform hover:scale-110">
+          <i class="fa fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="p-5 max-h-[70vh] overflow-y-auto">
+        <!-- 欢迎区域 -->
+        <div class="bg-blue-50 p-4 rounded-lg mb-5 text-center border-l-4 border-blue-500">
+          <p class="text-blue-800 font-medium">🎉 欢迎使用游戏修改器！</p>
+          <p class="text-blue-700 text-sm mt-1">快速体验游戏乐趣，轻松掌握修改技巧</p>
+        </div>
+        
+        <!-- 关键步骤 - 图示化展示 -->
+        <div class="mb-6">
+          <h4 class="font-bold text-lg mb-3 text-primary flex items-center">
+            <i class="fa fa-rocket text-xl mr-2 text-secondary"></i>
+            简单四步上手
+          </h4>
+          
+          <div class="space-y-4">
+            <!-- 第一步 -->
+            <div class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">1</div>
+              <div class="ml-3">
+                <p class="text-neutral-800 font-medium">准备工作</p>
+                <p class="text-neutral-600 text-sm mt-1">建议暂时关闭系统杀毒软件，避免误报干扰</p>
+              </div>
+            </div>
+            
+            <!-- 第二步 -->
+            <div class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">2</div>
+              <div class="ml-3">
+                <p class="text-neutral-800 font-medium">启动顺序</p>
+                <p class="text-neutral-600 text-sm mt-1">先运行修改器程序，然后再启动您的游戏</p>
+              </div>
+            </div>
+            
+            <!-- 第三步 -->
+            <div class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">3</div>
+              <div class="ml-3">
+                <p class="text-neutral-800 font-medium">识别游戏</p>
+                <p class="text-neutral-600 text-sm mt-1">等待修改器成功识别游戏进程（通常会有提示）</p>
+              </div>
+            </div>
+            
+            <!-- 第四步 -->
+            <div class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">4</div>
+              <div class="ml-3">
+                <p class="text-neutral-800 font-medium">开启功能</p>
+                <p class="text-neutral-600 text-sm mt-1">通过界面按钮或按指定热键激活您需要的修改功能</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 小贴士区域 -->
+        <div class="mb-6">
+          <h4 class="font-bold text-lg mb-3 text-primary flex items-center">
+            <i class="fa fa-lightbulb-o text-xl mr-2 text-yellow-500"></i>
+            玩家小贴士
+          </h4>
+          
+          <div class="space-y-2">
+            <div class="flex items-start">
+              <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+              <p class="text-neutral-700">使用前备份游戏存档，避免意外情况导致存档损坏</p>
+            </div>
+            <div class="flex items-start">
+              <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+              <p class="text-neutral-700">适当使用修改功能，保持游戏的挑战性和乐趣</p>
+            </div>
+            <div class="flex items-start">
+              <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+              <p class="text-neutral-700">游戏版本更新后，记得检查修改器是否也需要更新</p>
+            </div>
+            <div class="flex items-start">
+              <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+              <p class="text-neutral-700">遇到问题时，尝试以管理员身份运行修改器</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 安全提示区域 -->
+        <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+          <p class="font-medium text-amber-800 mb-2 flex items-center">
+            <i class="fa fa-shield text-amber-600 mr-2"></i>
+            安全提示
+          </p>
+          <p class="text-amber-700 text-sm">修改器仅供个人娱乐使用，我们确保所有提供的文件都是安全的，但仍建议从官方渠道获取。使用修改器可能会影响游戏体验，请适度使用。</p>
+        </div>
+      </div>
+      <div class="bg-neutral-100 p-4 flex justify-end">
+        <button id="confirmUsageGuideBtn" class="px-5 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors transform hover:scale-105">
+          准备开始游戏
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 赞助模态框 -->
+  <div id="sponsorModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-4">
+          <i class="fa fa-heart text-2xl text-orange-500"></i>
+        </div>
+        <h3 class="text-xl font-bold text-neutral-800 mb-2">支持月灵工坊</h3>
+        <p class="text-neutral-600">感谢您的支持，我们会继续努力优化体验！</p>
+      </div>
+      
+      <div class="bg-orange-50 p-4 rounded-lg border border-orange-100 mb-6">
+        <p class="text-neutral-700 text-center mb-2">❤️ 所有修改器均为个人人工收集整理</p>
+        <p class="text-neutral-700 text-center mb-2">🖥️ 服务器和维护费用全由我们承担</p>
+        <p class="text-neutral-700 text-center">🌟 您的支持是我们持续更新的动力</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <!-- 微信收款 -->
+          <div class="text-center">
+            <h4 class="font-medium text-neutral-800 mb-2">微信支付</h4>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200 shadow-md">
+              <img src="资源/images/qrcode/微信.png" alt="微信收款码" class="w-full h-auto max-w-[200px] mx-auto" loading="lazy">
+            </div>
+          </div>
+          
+          <!-- 支付宝收款 -->
+          <div class="text-center">
+            <h4 class="font-medium text-neutral-800 mb-2">支付宝</h4>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200 shadow-md">
+              <img src="资源/images/qrcode/支付宝.png" alt="支付宝收款码" class="w-full h-auto max-w-[200px] mx-auto" loading="lazy">
+            </div>
+          </div>
+        </div>
+      
+      <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-6">
+        <p class="text-blue-800 text-sm text-center">📝 如有任何问题，请加入QQ群联系我们</p>
+      </div>
+      
+      <button id="closeSponsorModal" class="w-full p-3 bg-neutral-200 text-neutral-800 rounded-lg font-medium hover:bg-neutral-300 transition-colors">
+        关闭
+      </button>
+    </div>
+  </div>
+  
+
+    <div id="sponsorPopup" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center">
+        <!-- 赞助弹窗内容 -->
+    </div>
+
+    <!-- 脚本引入 -->
+    <script src="资源/js/modules/状态管理.js"></script>
+    <script src="资源/js/modules/搜索功能.js"></script>
+    
+    <script src="资源/js/modules/游戏网格.js"></script>
+    <script src="资源/js/modules/模态框处理.js"></script>
+    <script src="资源/js/modules/分页.js"></script>
+    
+    <!-- 高性能数据加载器模块 - 必须在主脚本之前加载 -->
+    <script src="资源/js/modules/data-loader.js"></script>
+    
+    <script src="资源/js/主脚本.js"></script>
+    <script src="资源/js/滚动动画优化.js"></script>
+    
+    <!-- 组件加载脚本 -->
+    <script>
+        // 使用说明弹窗组件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 异步加载导航栏
+            const loadNavbar = () => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const navbarContainer = document.getElementById('header-container');
+                        if (navbarContainer) {
+                            navbarContainer.innerHTML = `
+<!-- 导航栏组件 - 独立模块样式 -->
+<div class="w-full px-0">
+  <header class="bg-white shadow-md border-b border-primary/10 rounded-lg mb-8">
+    <div class="px-6">
+      <div class="flex items-center py-4">
+      <!-- 左侧返回首页按钮 -->
+      <a href="index.html" class="flex items-center px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors shadow-sm text-sm mr-6">
+        <i class="fa fa-arrow-left mr-1"></i>
+        <span>返回首页</span>
+      </a>
+      
+      <!-- 中间按钮组 -->
+      <div class="flex items-center gap-3">
+        <!-- 使用说明按钮 -->
+        <button id="usageInstructionsBtn" class="flex items-center px-4 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition-colors shadow-sm text-sm">
+          <i class="fa fa-info-circle mr-1"></i>
+          <span>使用说明</span>
+        </button>
+      </div>
+      
+      <!-- 中间空间 -->
+      <div class="flex-grow"></div>
+      
+      <!-- 右侧内容 -->
+      <div class="flex items-center gap-4">
+        <!-- QQ交流群按钮 -->
+        <a href="https://qm.qq.com/q/2u1q4mOAQg" target="_blank" class="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-sm text-sm">
+          <i class="fa fa-qq mr-1"></i>
+          <span>QQ交流群</span>
+        </a>
+        
+        <!-- 支持我们按钮 -->
+        <a href="#" id="sponsorBtn" class="flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors shadow-sm text-sm">
+          <i class="fa fa-heart mr-1"></i>
+          <span>支持我们</span>
+        </a>
+        
+        <!-- 合作品牌Logo区域 -->
+        <div class="flex items-center gap-2">
+          <!-- 风灵月影Logo -->
+          <div class="p-1">
+            <img src="资源/images/logo/45b8b3550e0e17e34d5bedea788e5eb3_副本.png" alt="风灵月影LOGO" class="w-12 h-auto">
+          </div>
+          <!-- 合作标识 -->
+          <span class="text-gray-400 text-lg">+</span>
+          <!-- 店标Logo -->
+            <div class="p-1">
+              <img src="资源/images/logo/店标.png" alt="店标LOGO" class="w-12 h-auto">
+            </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>`;
+                        }
+                        resolve();
+                    }, 100);
+                });
+            };
+
+            // 加载导航栏
+            loadNavbar().then(() => {
+                // 为使用说明按钮添加点击事件
+                const usageInstructionsBtn = document.getElementById('usageInstructionsBtn');
+                const usageGuideModal = document.getElementById('usageGuideModal');
+                const closeUsageGuideModal = document.getElementById('closeUsageGuideModal');
+                const confirmUsageGuideBtn = document.getElementById('confirmUsageGuideBtn');
+                
+                if (usageInstructionsBtn && usageGuideModal) {
+                    // 点击按钮显示弹窗
+                    usageInstructionsBtn.addEventListener('click', function() {
+                        usageGuideModal.classList.remove('hidden');
+                        usageGuideModal.classList.add('flex');
+                    });
+                    
+                    // 点击关闭按钮关闭弹窗
+                    if (closeUsageGuideModal) {
+                        closeUsageGuideModal.addEventListener('click', function() {
+                            usageGuideModal.classList.add('hidden');
+                            usageGuideModal.classList.remove('flex');
+                        });
+                    }
+                    
+                    // 点击确认按钮关闭弹窗
+                    if (confirmUsageGuideBtn) {
+                        confirmUsageGuideBtn.addEventListener('click', function() {
+                            usageGuideModal.classList.add('hidden');
+                            usageGuideModal.classList.remove('flex');
+                        });
+                    }
+                    
+                    // 点击背景关闭弹窗
+                    usageGuideModal.addEventListener('click', function(e) {
+                        if (e.target === usageGuideModal) {
+                            usageGuideModal.classList.add('hidden');
+                            usageGuideModal.classList.remove('flex');
+                        }
+                    });
+                    
+                    // ESC键关闭弹窗
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && !usageGuideModal.classList.contains('hidden')) {
+                            usageGuideModal.classList.add('hidden');
+                            usageGuideModal.classList.remove('flex');
+                        }
+                    });
+                }
+                
+                // 为支持我们按钮添加点击事件
+                const sponsorBtn = document.getElementById('sponsorBtn');
+                const sponsorModal = document.getElementById('sponsorModal');
+                const closeSponsorModal = document.getElementById('closeSponsorModal');
+                
+                if (sponsorBtn && sponsorModal && closeSponsorModal) {
+                    sponsorBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        sponsorModal.classList.remove('hidden');
+                        sponsorModal.classList.add('flex');
+                    });
+                    
+                    closeSponsorModal.addEventListener('click', function() {
+                        sponsorModal.classList.add('hidden');
+                        sponsorModal.classList.remove('flex');
+                    });
+                    
+                    sponsorModal.addEventListener('click', function(e) {
+                        if (e.target === sponsorModal) {
+                            sponsorModal.classList.add('hidden');
+                            sponsorModal.classList.remove('flex');
+                        }
+                    });
+                }
+                
+                // 移除自动显示弹窗的逻辑，用户可以通过点击按钮查看使用说明
+            });
+        });
+    </script>
+</body>
+</html>

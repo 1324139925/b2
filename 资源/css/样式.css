@@ -1,0 +1,412 @@
+/* 全局样式重置和基础设置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* 移除默认内边距，让元素更好地贴合 */
+  padding: 0 !important;
+}
+
+/* 图片懒加载相关样式 */
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.lazy-loaded {
+    opacity: 1;
+    animation: fade-in 0.3s ease-in-out;
+}
+
+.image-fallback {
+    filter: grayscale(30%);
+    position: relative;
+}
+
+.image-fallback::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px dashed #ccc;
+    pointer-events: none;
+}
+
+/* 占位图动画 */
+@keyframes placeholder-loading {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 确保图片容器有明确的尺寸，避免布局偏移 */
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+/* 游戏卡片中的图片样式优化 */
+.game-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+}
+
+/* 搜索框特定样式 - 确保图标和占位符不重叠 */
+#searchInput {
+  padding-left: 2.8rem !important;
+}
+
+#searchInput::placeholder {
+  text-indent: 0.5rem;
+}
+
+/* 自定义滚动条样式 - 适用于Chrome、Edge等Webkit浏览器 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 自定义滚动条样式 - 适用于Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+/* 主容器样式 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 通用按钮样式 */
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+/* 输入框样式 */
+input, textarea {
+  font-family: inherit;
+  outline: none;
+}
+
+/* 隐藏类 */
+.hidden {
+  display: none !important;
+}
+
+/* 可见性类 */
+.visible {
+  visibility: visible;
+}
+
+/* 不可见性类 */
+.invisible {
+  visibility: hidden;
+}
+
+/* 加载指示器样式 - 与Tailwind协同 */
+.loading-spinner {
+  @apply border-4 border-blue-500/10 border-t-blue-500 rounded-full w-10 h-10 animate-spin;
+}
+
+/* 空状态样式 - 与Tailwind协同 */
+.empty-state {
+  @apply text-center py-16 px-8 text-slate-500;
+}
+
+.empty-state h3 {
+  @apply mb-4 text-slate-700;
+}
+
+/* 模态框样式 - 与Tailwind协同 */
+.modal {
+  @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-white rounded-lg shadow-lg max-w-[500px] w-[90%] max-h-[80vh] overflow-y-auto;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .modal-content {
+    @apply w-[95%];
+  }
+}
+
+/* 优化顶部元素间距 */
+#header-container {
+  margin-bottom: 0 !important;
+}
+
+/* 导航栏组件样式优化 */
+#header-container > div {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 为所有导航栏设置基础圆角样式 */
+#header-container header {
+  border-radius: 1rem !important; /* 增大圆角值使其更明显 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0 !important;
+  overflow: hidden; /* 确保内容不会溢出圆角 */
+}
+
+/* 风灵合集页面特定导航栏样式 - 保留使用说明按钮 */
+body.fenling #header-container header {
+  border-radius: 1rem !important;
+}
+
+/* wemod页面特定导航栏样式 */
+body.wemod #header-container header {
+  border-radius: 1rem !important;
+}
+
+/* 常见问题页面特定导航栏样式 */
+body.faq #header-container header {
+  border-radius: 1rem !important;
+}
+
+#header-container .px-6 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+#header-container .py-4 {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+/* 确保更新信息和搜索框之间没有多余间距 */
+#updateInfoContainer {
+  padding: 0;
+  margin: 0;
+}
+
+/* 优化主内容区域边距 */
+#gameGrid {
+  margin-top: 0.5rem;
+  gap: 0.75rem; /* 减少游戏卡片之间的间距 */
+}
+
+/* 游戏卡片样式优化 */
+/* 游戏卡片基础样式 - 添加统一的圆角 */
+#gameGrid > div {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 320px; /* 减少卡片最小高度 */
+  border-radius: 0.75rem !important; /* 添加卡片圆角 */
+  overflow: hidden; /* 确保内容不会超出圆角 */
+}
+
+/* 调整卡片内部布局，确保内容紧凑 */
+#gameGrid > div h3 {
+  height: 4rem; /* 减少标题区域高度 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 调整为2行截断 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0 1rem 0.75rem 1rem; /* 减少底部内边距 */
+  font-size: 1.05rem; /* 稍微减小字体大小 */
+  line-height: 1.4; /* 调整行高 */
+  text-align: center;
+}
+
+/* 确保图片容器大小适当 - 调整宽度和高度 */
+#gameGrid > div .w-full.h-40 {
+  height: 160px !important; /* 减少图片高度 */
+  width: 100% !important;
+  padding: 0 !important;
+  border-radius: 0.75rem 0.75rem 0 0 !important; /* 添加图片容器圆角 */
+}
+
+/* 确保图片完全填满容器 */
+#gameGrid > div .lazy {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+/* 调整按钮容器，使其在卡片底部对齐 */
+#gameGrid > div > div:last-child {
+  margin-top: auto;
+  width: 100%;
+  padding: 0 1rem 0.75rem 1rem; /* 减少底部内边距 */
+}
+
+/* 调整按钮容器宽度，使其与图片框对齐 */
+#gameGrid > div .space-y-3,
+#gameGrid > div a.w-full,
+#gameGrid > div button.w-full {
+  width: 100% !important;
+  /* 移除border-radius: 0 */
+}
+
+/* 按钮容器样式 */
+#gameGrid > div .w-full.space-y-3 {
+  padding: 0 !important;
+  gap: 0.5rem !important; /* 减少按钮间距 */
+}
+
+/* 修复按钮样式 - 添加圆角 */
+#gameGrid > div a.w-full.py-3,
+#gameGrid > div button.w-full.py-3 {
+  border-radius: 0.5rem !important; /* 添加按钮圆角 */
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem; /* 减少按钮最小高度 */
+  font-size: 0.9rem; /* 减小按钮字体大小 */
+  transition: all 0.3s ease;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 下载修改器按钮悬停效果 */
+#gameGrid > div a.w-full.py-3.bg-primary:hover,
+#gameGrid > div button.w-full.py-3.bg-primary:hover {
+  background-color: #1e40af !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+  color: white !important;
+}
+
+/* 反作弊文件按钮悬停效果 */
+#gameGrid > div a.w-full.py-3.bg-red-50:hover {
+  background-color: #fee2e2 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  color: #b91c1c !important;
+  border-color: #b91c1c !important;
+}
+
+/* 确保只有一个按钮的卡片和有两个按钮的卡片底部对齐 */
+#gameGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+/* 响应式调整：在小屏幕上调整卡片大小 */
+@media (max-width: 640px) {
+  #gameGrid > div {
+    max-width: 90% !important;
+  }
+}
+
+/* 响应式调整：在中等屏幕上调整卡片大小 */
+@media (min-width: 641px) and (max-width: 1024px) {
+  #gameGrid > div {
+    max-width: 280px !important;
+  }
+}
+
+/* 缓慢滚动文字区域样式优化 */
+.relative.overflow-hidden.bg-red-50.py-2.mb-1.shadow-sm.min-h-12.flex.items-center {
+  margin-top: -5px; /* 向上移动一点 */
+  margin-bottom: 0 !important;
+}
+
+/* 导航栏整体上移 */
+#header-container {
+  margin-top: -5px; /* 向上移动一点 */
+}
+
+/* 页面标题区域优化 */
+.text-center.mb-3.relative.z-10 {
+  margin-top: 15px !important; /* 确保标题有足够的空间 */
+}
+
+
+
+/* 视频模态框关闭按钮增强样式 */
+#closeVideoModal {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background-color: #ef4444; /* 红色背景更醒目 */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  transition: all 0.3s ease;
+}
+
+#closeVideoModal:hover {
+  background-color: #dc2626;
+  transform: scale(1.1);
+  color: white;
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
+}
+
+#closeVideoModal i {
+  margin: 0;
+}
+
+/* 确保模态框背景颜色正确 */
+#videoModal {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#videoModal .relative {
+  position: relative;
+  z-index: 10;
+}
