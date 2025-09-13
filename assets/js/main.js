@@ -850,8 +850,8 @@ function loadGameData() {
   
   // 加载新数据的函数 - 带重试机制
   function loadFreshData(isBackgroundUpdate = false, retryCount = 0) {
-    // 直接使用原始JSON文件
-    const jsonDataPath = 'data/modifiers_data.json';
+    // 使用压缩优化版本的JSON文件
+    const jsonDataPath = 'data/optimized/modifiers_data.min.json';
     console.log(`${isBackgroundUpdate ? '后台' : '前台'}加载JSON数据文件:`, jsonDataPath, `(尝试 ${retryCount + 1}/3)`);
     
     // 设置fetch请求选项，优化缓存策略
